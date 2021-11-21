@@ -1,7 +1,7 @@
 <html>
 
 <head>
-  <title>K</title>
+  <title>2112</title>
   <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
   <link rel="stylesheet" href="https://dpalmer.in/Peoria/css/peoria-0-6-0.min.css">
   <style>
@@ -89,12 +89,12 @@
       vUv = uv;
       vec3 cusPos = vec3(player.x, player.y, 0.0);
       float nnoise = 30. * turbulence(((position + cusPos + seed) / 100.));
-      float mnoise = 10. * abs(turbulence(((position + cusPos + seed) / 500.)));
+      float mnoise = 10. * abs(turbulence(((position + cusPos + seed) / 20.)));
 
 
-      float wnoise = .2 *  noise(position + cusPos + seed + (time*2.)) * step(length(vUv - .5), .49);
-      newPosition = position + normal * nnoise - wnoise - mnoise;
-      noiseTex = (newPosition / 15.) + (wnoise / 4.) - (mnoise / 15.);
+      float wnoise = 0.3 * noise(position + cusPos + (time * 1.5)) * step(length(vUv - .5), .48);
+      newPosition = position + normal * (nnoise - wnoise - mnoise);
+      noiseTex = (newPosition / 15.) - (wnoise / 10.) - (mnoise / 15.);
       gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
     
     }
@@ -105,7 +105,7 @@
     varying vec3 newPosition;
 
     void main() {
-      vec3 color = vec3(.97, .82, .3) * noiseTex.z + vec3(.68, .27, .19) -0.2;
+      vec3 color = vec3(.97, .45, .85) * noiseTex.z + vec3(.1, .09, .5) - 0.15;
       gl_FragColor = vec4(color, step(length(vUv - .5), .5));
     }
 	</script>

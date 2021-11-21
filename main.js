@@ -15,11 +15,11 @@ async function init() {
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0x080808);
 
-    frustumSize = 100;
+    frustumSize = 30;
     aspect = window.innerWidth / window.innerHeight;
     camera = new THREE.OrthographicCamera(frustumSize * aspect / - 2, frustumSize * aspect / 2, frustumSize / 2, frustumSize / - 2, 0.0001, 1000);
     // camera = new THREE.PerspectiveCamera(50, aspect, 1, 1000);
-    camera.position.set(50, 40, 50);
+    camera.position.set(100, 100, 100);
     camera.lookAt(0, 0, 0);
     scene.add(camera);
 
@@ -27,7 +27,7 @@ async function init() {
 
     var geometry = new THREE.PlaneGeometry(
         100, 100,
-        250, 250);
+        300, 300);
     const material = new THREE.ShaderMaterial({
         uniforms: {
             time: {
@@ -36,7 +36,7 @@ async function init() {
             },
             seed: {
                 type: "f",
-                value: Math.random() << 20
+                value: (Date.now() >> 10) * Math.random()
             },
             player: {
                 type: "vec2",
@@ -52,6 +52,7 @@ async function init() {
 
     Terrain = new THREE.Mesh(geometry, material)
     Terrain.rotateX(- Math.PI / 2);
+    Terrain.position.y -= 5;
 
     scene.add(Terrain)
 
@@ -66,8 +67,8 @@ async function init() {
 
     const bloom = new UnrealBloomPass(
         new THREE.Vector2(window.innerWidth, window.innerHeight),
-        .3,
-        1.,
+        .2,
+        .6,
         .0,
         1.
       );
@@ -92,7 +93,7 @@ async function init() {
 function draw() {
     requestAnimationFrame(() => { draw() });
     Terrain.material.uniforms['time'].value = .0005 * (Date.now() - start);
-    Terrain.material.uniforms['player'].value = {x: controls.target.x, y: controls.target.y};
+    Terrain.material.uniforms['player'].value = {x: controls.target.x * 2, y: controls.target.y * 2};
     finalComposer.render(scene, camera);
 }
 

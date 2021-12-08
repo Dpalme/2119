@@ -92,9 +92,9 @@
       float mnoise = 10. * abs(turbulence(((position + cusPos + seed) / 20.)));
 
 
-      float wnoise = 0.3 * noise(position + cusPos + (time * 1.5)) * step(length(vUv - .5), .48);
+      float wnoise = 0.3 * noise(position + cusPos + (time / 4.)) * step(length(vUv - .5), .5);
       newPosition = position + normal * (nnoise - wnoise - mnoise);
-      noiseTex = (newPosition / 15.) - (wnoise / 10.) - (mnoise / 15.);
+      noiseTex = (newPosition / 15.) - (wnoise / 20.) - (mnoise / 15.);
       gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
     
     }

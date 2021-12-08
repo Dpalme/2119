@@ -1,7 +1,7 @@
 import * as THREE from 'https://threejs.org/build/three.module.js';
 import { EffectComposer } from "https://threejs.org/examples/jsm/postprocessing/EffectComposer.js";
 import { RenderPass } from "https://threejs.org/examples/jsm/postprocessing/RenderPass.js";
-import { UnrealBloomPass } from "https://visualizer.dpalmer.in/src/shaders/ulBloom.js";
+import { UnrealBloomPass } from "./ulBloom.js";
 import { OrbitControls } from './controller.js';
 
 let camera = null,
@@ -27,7 +27,7 @@ async function init() {
 
     var geometry = new THREE.PlaneGeometry(
         100, 100,
-        300, 300);
+        200, 200);
     const material = new THREE.ShaderMaterial({
         uniforms: {
             time: {
@@ -92,7 +92,7 @@ async function init() {
 
 function draw() {
     requestAnimationFrame(() => { draw() });
-    Terrain.material.uniforms['time'].value = .0005 * (Date.now() - start);
+    Terrain.material.uniforms['time'].value = .005 * (Date.now() - start);
     Terrain.material.uniforms['player'].value = {x: controls.target.x * 2, y: controls.target.y * 2};
     finalComposer.render(scene, camera);
 }

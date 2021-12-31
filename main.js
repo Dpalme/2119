@@ -19,7 +19,7 @@ async function init() {
     aspect = window.innerWidth / window.innerHeight;
     camera = new THREE.OrthographicCamera(frustumSize * aspect / - 2, frustumSize * aspect / 2, frustumSize / 2, frustumSize / - 2, 0.0001, 1000);
     // camera = new THREE.PerspectiveCamera(50, aspect, 1, 1000);
-    camera.position.set(100, 100, 100);
+    camera.position.set(100, 200, 100);
     camera.lookAt(0, 0, 0);
     scene.add(camera);
 

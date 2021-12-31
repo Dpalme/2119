@@ -105,7 +105,7 @@
     varying vec3 newPosition;
 
     void main() {
-      vec3 color = vec3(.97, .45, .85) * noiseTex.z + vec3(.1, .09, .5) - 0.15;
+      vec3 color = vec3(.937, .556, .992) * noiseTex.z + vec3(.807, .207, .427) - 0.05;
       gl_FragColor = vec4(color, step(length(vUv - .5), .5));
     }
 	</script>

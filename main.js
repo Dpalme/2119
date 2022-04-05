@@ -1,5 +1,8 @@
 import * as three from 'https://threejs.org/build/three.module.js';
 import { OrbitControls } from './controller.js';
+import { EffectComposer } from './shaders/EffectComposer.js';
+import { RenderPass } from './shaders/RenderPass.js';
+import { UnrealBloomPass } from '././shaders/ulBloom.js';
 
 let camera = null,
     scene = null,
@@ -16,15 +19,13 @@ async function init() {
     aspect = window.innerWidth / window.innerHeight;
     camera = new three.OrthographicCamera(frustumSize * aspect / - 2, frustumSize * aspect / 2, frustumSize / 2, frustumSize / - 2, 0.0001, 1000);
     // camera = new three.PerspectiveCamera(50, aspect, 1, 1000);
-    camera.position.set(100, 200, 100);
+    camera.position.set(100, 100, 100);
     camera.lookAt(0, 0, 0);
     scene.add(camera);
 
-    var clipping = new three.CylinderGeometry( 50, 50, 20, 32 );
-
     var geometry = new three.PlaneGeometry(
         100, 100,
-        200, 200);
+        400, 400);
     const material = new three.ShaderMaterial({
         uniforms: {
             time: {
@@ -43,7 +44,6 @@ async function init() {
         vertexShader: document.getElementById('vertexShader').textContent,
         fragmentShader: document.getElementById('fragmentShader').textContent,
         side: three.DoubleSide,
-        clippingPlanes: [ clipping ],
         transparent: true
     });
 
@@ -60,6 +60,17 @@ async function init() {
     );
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
+    const renderScene = new RenderPass(scene, camera);
+
+    // UnrealBloomPass(resolution, intensity, radius, threshold)
+    const bloomPass = new UnrealBloomPass(
+        new three.Vector2(window.innerWidth, window.innerHeight),
+        1, 1, 0.25);
+
+
+    const finalComposer = new EffectComposer(renderer);
+    finalComposer.addPass(renderScene);
+    finalComposer.addPass(bloomPass);
 
     controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;

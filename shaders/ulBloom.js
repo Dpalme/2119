@@ -10,8 +10,8 @@ import {
 	Vector3,
 	WebGLRenderTarget
 } from 'https://threejs.org/build/three.module.js';
-import { Pass, FullScreenQuad } from 'https://threejs.org/examples/jsm/postprocessing/Pass.js';
-import { CopyShader } from 'https://threejs.org/examples/jsm/shaders/CopyShader.js';
+import { Pass, FullScreenQuad } from './Pass.js';
+import { CopyShader } from './CopyShader.js';
 import { LuminosityHighPassShader } from './LuminosityFilterPassShader.js';
 
 /**

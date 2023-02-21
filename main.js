@@ -13,15 +13,17 @@ let camera = null,
 
 async function init() {
     scene = new three.Scene();
-    scene.background = new three.Color(0x080808);
+    scene.background = new three.Color(0xD7BA94);
 
     frustumSize = 30;
     aspect = window.innerWidth / window.innerHeight;
     camera = new three.OrthographicCamera(frustumSize * aspect / - 2, frustumSize * aspect / 2, frustumSize / 2, frustumSize / - 2, 0.0001, 1000);
     // camera = new three.PerspectiveCamera(50, aspect, 1, 1000);
+    camera.zoom = 1.5;
     camera.position.set(100, 100, 100);
     camera.lookAt(0, 0, 0);
     scene.add(camera);
+    camera.updateProjectionMatrix();
 
     var geometry = new three.PlaneGeometry(
         100, 100,
@@ -65,7 +67,7 @@ async function init() {
     // UnrealBloomPass(resolution, intensity, radius, threshold)
     const bloomPass = new UnrealBloomPass(
         new three.Vector2(window.innerWidth, window.innerHeight),
-        1, 1, 0.25);
+        3, 1);
 
 
     const finalComposer = new EffectComposer(renderer);

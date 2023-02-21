@@ -93,15 +93,14 @@
         void main() {
           vUv = uv;
           vec3 cusPos = vec3(player.x, player.y, 0.0);
-          float nnoise = 8. * turbulence(((position + cusPos + seed * 2.) / 50.));
-          float mnoise = 4. * turbulence(((position + cusPos + seed) / 30.));
+          float nnoise = 30. * turbulence((position + cusPos + seed) / 100.);
+          float mnoise = 15. * turbulence((position + cusPos + seed) / 200.);
 
 
-          float wnoise = .25 * turbulence((-position * 2.) + cusPos + (time / 75.));
-          newPosition = position + normal * (nnoise - wnoise - mnoise);
-          noiseTex = (newPosition / 15.) - (wnoise / 20.) - (mnoise / 15.);
+          float wnoise = 1.2 * turbulence((position + cusPos + (time / 3.)) / 7.);
+          newPosition = position + normal * (nnoise + wnoise - mnoise);
+          noiseTex = (newPosition / 15.) + (wnoise / 25.) - (mnoise / 15.);
           gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
-
         }
     </script>
     <script type="x-shader/x-fragment" id="fragmentShader">
@@ -109,11 +108,25 @@
       varying vec3 noiseTex;
       varying vec3 newPosition;
 
+      float lowR = 220. / 255.;
+      float lowG = 211. / 255.;
+      float lowB = 168. / 255.;
+
+      float higR = 237. / 255.;
+      float higG = 130. / 255.;
+      float higB = 59. / 255.;
+
       void main() {
-        vec3 color = vec3(.68,.91,.96) + (vec3(.95,.98,.93) * noiseTex.z);
-        gl_FragColor = vec4(color, step(length(vUv - .5), .5));
+        vec3 color = .5 * vec3(lowR, lowG, lowB) - (.3 + vec3(higR, higG, higB) * -noiseTex.z) / -1.5;
+        gl_FragColor = vec4(color, step(length(vUv - .5), .55));
       }
     </script>
+    <style>
+      r {
+        color: rgb(241, 250, 238);
+        color: rgb(237, 130, 59) ;
+      }
+    </style>
     <script src="./main.js" type="module"></script>
   </body>
 </html>
